@@ -1,0 +1,268 @@
+import type { Lang } from '../types';
+
+export const STORE_INFO = {
+  phone: '+966536912562',
+  whatsappNumber: '966536912562',
+  email: 'pq96960@gmail.com',
+  instagram: 'https://www.instagram.com/gift_sara2015',
+  snapchat: 'https://www.snapchat.com/add/hmsh_lyn',
+  tiktok: 'https://www.tiktok.com/@s.m7343',
+  originalUrl: 'https://gift-sarah.com/en',
+  logo: '/images/brand-logo-transparent.png',
+  icon: '/images/favicon.png',
+  branches: [
+    {
+      id: 'mousa',
+      nameAr: 'فرع حي الموسى',
+      nameEn: 'Al-Mousa Branch',
+      addressAr: 'شارع أحمد بن الخطاب، حي الموسى، الرياض، المملكة العربية السعودية',
+      addressEn: 'Ahmad Ibn Al-Khattab St, Al-Mousa, Riyadh, Saudi Arabia',
+      mapsUrl:
+        'https://www.google.com/maps/search/?api=1&query=' +
+        encodeURIComponent('أحمد بن الخطاب، حي الموسى، الرياض، المملكة العربية السعودية'),
+    },
+    {
+      id: 'mansourah',
+      nameAr: 'فرع حي المنصورة',
+      nameEn: 'Al-Mansourah Branch',
+      addressAr: 'شارع معن بن زائدة، حي المنصورة، الرياض 14714، المملكة العربية السعودية',
+      addressEn: 'Maan Ibn Zaidah St, Al-Mansourah, Riyadh 14714, Saudi Arabia',
+      mapsUrl:
+        'https://www.google.com/maps/search/?api=1&query=' +
+        encodeURIComponent('شارع معن بن زائدة، المنصورة، الرياض 14714، المملكة العربية السعودية'),
+    },
+  ],
+};
+
+export const translations = {
+  ar: {
+    brandName: 'هدايا سارة',
+    brandSub: 'Gift Sarah Atelier • الرياض',
+    announcement: 'توصيل فوري داخل الرياض خلال ساعات • تنسيق ورد طبيعي وهدايا فاخرة حسب الطلب',
+    nav: {
+      home: 'الرئيسية',
+      collections: 'الأقسام',
+      catalog: 'المتجر',
+      bespoke: 'التفصيل الخاص',
+      about: 'عن سارة',
+    },
+    searchPlaceholder: 'ابحث عن باقة، استاند استقبال، مسكة عروس...',
+    hero: {
+      eyebrow: 'دار تنسيق الورود والهدايا الفاخرة — الرياض',
+      title: 'حيث تتحوّل الورود والهدايا إلى تحفة لا تُنسى',
+      subtitle:
+        'تشكيلات منتقاة بعناية من الورد الطبيعي، مسكات العرايس، استاندات الاستقبال، وتقديمات المهور بتوقيع هدايا سارة.',
+      ctaPrimary: 'تصفح التشكيلة',
+      ctaSecondary: 'طلب تصميم خاص',
+      stat1Num: '144+',
+      stat1Label: 'تصميم وتنسيق حصري',
+      stat2Num: 'نفس اليوم',
+      stat2Label: 'توصيل داخل الرياض',
+      stat3Num: '100%',
+      stat3Label: 'تنفيذ يدوي متقن',
+    },
+    categories: {
+      eyebrow: 'مجموعاتنا المختارة',
+      title: 'أقسام المتجر',
+      subtitle: 'اختر المناسبة ودعنا نهتم بأدق تفاصيل التنسيق والتغليف',
+      all: 'الكل',
+      itemsCount: 'منتج',
+    },
+    catalog: {
+      eyebrow: 'تشكيلة هدايا سارة',
+      title: 'المنتجات والتنسيقات',
+      showing: 'عرض',
+      of: 'من أصل',
+      product: 'منتج',
+      sortFeatured: 'الأكثر تميزاً',
+      sortPriceAsc: 'السعر: من الأقل للأعلى',
+      sortPriceDesc: 'السعر: من الأعلى للأقل',
+      sortSale: 'العروض والتخفيضات',
+      loadMore: 'عرض المزيد من التنسيقات',
+      noResults: 'لم نجد منتجات مطابقة لبحثك. جرّب كلمة أخرى أو استعرض جميع الأقسام.',
+      resetFilters: 'إعادة ضبط الفلاتر',
+      saleBadge: 'عرض خاص',
+      customBadge: 'حسب الطلب',
+      addToBag: 'أضف للسلة',
+      quickView: 'معاينة سريعة',
+      sar: 'ر.س',
+    },
+    modal: {
+      giftNoteLabel: 'رسالة بطاقة الإهداء (اختياري)',
+      giftNotePlaceholder: 'اكتب عبارتك الرقيقة لتُطبع على بطاقة هدايا سارة الفاخرة...',
+      ribbonLabel: 'لون الشريط والتغليف المفضل',
+      ribbons: ['أوف وايت ملكي', 'ذهبي شامبين', 'وردي ناعم', 'أسود مخملي'],
+      quantity: 'الكمية',
+      addToCart: 'إضافة إلى حقيبة الهدايا',
+      orderWhatsapp: 'طلب مباشر عبر واتساب',
+      defaultDesc:
+        'تنسيق فاخر منفّذ بعناية في أتيليه هدايا سارة بالرياض باستخدام أجود الخامات والورود المختارة بعناية لتناسب ذوقكم الرفيع.',
+    },
+    bespoke: {
+      eyebrow: 'أتيليه المناسبات الخاصة',
+      title: 'تصميم مداخل، استاندات وشبكات زواج حسب ذوقك',
+      subtitle:
+        'في هدايا سارة نصمم وننفّذ استاندات الاستقبال، تقديمات المهور، والدزات بالمقاسات والألوان التي تحلمين بها لتكون واجهة مناسبتك استثنائية.',
+      cta: 'تواصلي معنا لتصميم طلبك',
+      features: [
+        'تخصيص الألوان والمقاسات بالكامل',
+        'تنسيق ورد طبيعي أو صناعي فاخر',
+        'إمكانية إضافة الأسماء والعبارات الأكريليك',
+        'تجهيز وتوصيل دقيق في الموعد بالرياض',
+      ],
+    },
+    pillars: [
+      {
+        title: 'ورود منتقاة يومياً',
+        desc: 'نختار أجود أنواع الورد الطبيعي لنضمن نضارة وعبقاً يدوم طويلاً.',
+      },
+      {
+        title: 'تغليف يليق بالهدية',
+        desc: 'خامات فاخرة، شرائط حريرية، وبطاقات إهداء مصممة بذوق رفيع.',
+      },
+      {
+        title: 'توصيل سريع بالرياض',
+        desc: 'خدمة توصيل موثوقة وسريعة في نفس اليوم لجميع أحياء الرياض.',
+      },
+      {
+        title: 'تنسيق حسب الطلب',
+        desc: 'مرونة كاملة في تعديل الألوان والمقاسات لتناسب مناسبتك الخاصة.',
+      },
+    ],
+    cart: {
+      title: 'حقيبة الهدايا',
+      emptyTitle: 'حقيبتك فارغة حالياً',
+      emptyDesc: 'ابدأ باستكشاف باقات الورد والهدايا الفاخرة وأضف ما يلامس ذوقك.',
+      browseBtn: 'استكشف المتجر',
+      subtotal: 'المجموع الفرعي',
+      deliveryNote: 'يتم تأكيد رسوم وموعد التوصيل بالرياض عبر الواتساب',
+      checkoutWhatsapp: 'إتمام الطلب عبر واتساب',
+      clearCart: 'إفراغ الحقيبة',
+      giftNotePrefix: 'بطاقة الإهداء:',
+      ribbonPrefix: 'التغليف:',
+    },
+    footer: {
+      about:
+        'متجر وأتيليه هدايا سارة في الرياض — متخصصون في تنسيق الورد الطبيعي والصناعي، مسكات العرايس، استاندات الاستقبال، وتقديمات المهور والهدايا الفاخرة.',
+      quickLinks: 'روابط سريعة',
+      contactTitle: 'تواصل معنا',
+      location: 'الرياض، المملكة العربية السعودية',
+      rights: '© 2026 هدايا سارة (Gift Sarah). جميع الحقوق محفوظة.',
+    },
+  },
+  en: {
+    brandName: 'Gift Sarah',
+    brandSub: 'Luxury Floral & Gift Atelier • Riyadh',
+    announcement: 'Same-day delivery across Riyadh • Bespoke floral & gift curation • Concierge via WhatsApp',
+    nav: {
+      home: 'Home',
+      collections: 'Collections',
+      catalog: 'Boutique',
+      bespoke: 'Bespoke',
+      about: 'Atelier',
+    },
+    searchPlaceholder: 'Search bouquets, reception stands, bridal florals...',
+    hero: {
+      eyebrow: 'Bespoke Floral & Gift Boutique — Riyadh',
+      title: 'Where Every Bloom & Gift Becomes an Unforgettable Moment',
+      subtitle:
+        'Curated collections of fresh natural flowers, bridal bouquets, luxury reception stands, and Mahr presentations crafted with signature elegance.',
+      ctaPrimary: 'Explore Collection',
+      ctaSecondary: 'Bespoke Consultation',
+      stat1Num: '144+',
+      stat1Label: 'Curated Arrangements',
+      stat2Num: 'Same-Day',
+      stat2Label: 'Riyadh Delivery',
+      stat3Num: '100%',
+      stat3Label: 'Artisan Handcrafted',
+    },
+    categories: {
+      eyebrow: 'Curated Collections',
+      title: 'Shop by Occasion',
+      subtitle: 'Select your occasion and let our atelier craft every detail with grace',
+      all: 'All',
+      itemsCount: 'items',
+    },
+    catalog: {
+      eyebrow: 'The Gift Sarah Collection',
+      title: 'Boutique Catalog',
+      showing: 'Showing',
+      of: 'of',
+      product: 'creations',
+      sortFeatured: 'Featured',
+      sortPriceAsc: 'Price: Low to High',
+      sortPriceDesc: 'Price: High to Low',
+      sortSale: 'Special Offers',
+      loadMore: 'Load More Creations',
+      noResults: 'No arrangements matched your search. Try another keyword or browse all collections.',
+      resetFilters: 'Reset Filters',
+      saleBadge: 'Special Offer',
+      customBadge: 'Made to Order',
+      addToBag: 'Add to Bag',
+      quickView: 'Quick View',
+      sar: 'SAR',
+    },
+    modal: {
+      giftNoteLabel: 'Complimentary Gift Card Message (Optional)',
+      giftNotePlaceholder: 'Write your heartfelt note to be printed on our signature Gift Sarah card...',
+      ribbonLabel: 'Preferred Ribbon & Wrapping',
+      ribbons: ['Royal Ivory', 'Champagne Gold', 'Dusty Rose', 'Velvet Noir'],
+      quantity: 'Quantity',
+      addToCart: 'Add to Gift Bag',
+      orderWhatsapp: 'Order Directly via WhatsApp',
+      defaultDesc:
+        'A refined arrangement handcrafted at the Gift Sarah Atelier in Riyadh using premium blooms and luxury presentation tailored to your taste.',
+    },
+    bespoke: {
+      eyebrow: 'Bespoke Event Atelier',
+      title: 'Custom Reception Stands, Entrances & Bridal Dazza',
+      subtitle:
+        'We design and craft bespoke entrance stands, Mahr presentations, and wedding jewelry displays tailored to your exact dimensions, palette, and celebration theme.',
+      cta: 'Consult on WhatsApp',
+      features: [
+        'Fully customizable colors & dimensions',
+        'Fresh natural or luxury silk florals',
+        'Custom acrylic monograms & calligraphy',
+        'White-glove delivery & setup in Riyadh',
+      ],
+    },
+    pillars: [
+      {
+        title: 'Fresh Daily Blooms',
+        desc: 'Hand-selected premium stems sourced daily for lasting beauty and fragrance.',
+      },
+      {
+        title: 'Signature Packaging',
+        desc: 'Luxury boxes, silk ribbons, and bespoke calligraphy gift cards.',
+      },
+      {
+        title: 'Riyadh Same-Day Delivery',
+        desc: 'Reliable, temperature-controlled delivery across all Riyadh neighborhoods.',
+      },
+      {
+        title: 'Tailored to Your Taste',
+        desc: 'Flexible color palettes and sizing for weddings, receptions, and gifting.',
+      },
+    ],
+    cart: {
+      title: 'Your Gift Bag',
+      emptyTitle: 'Your gift bag is empty',
+      emptyDesc: 'Explore our curated floral arrangements and luxury gifts to begin.',
+      browseBtn: 'Explore Boutique',
+      subtotal: 'Subtotal',
+      deliveryNote: 'Riyadh delivery timing & fees are confirmed seamlessly via WhatsApp',
+      checkoutWhatsapp: 'Checkout via WhatsApp',
+      clearCart: 'Clear Bag',
+      giftNotePrefix: 'Gift Card:',
+      ribbonPrefix: 'Wrapping:',
+    },
+    footer: {
+      about:
+        'Gift Sarah Boutique & Atelier in Riyadh — specializing in natural & silk florals, bridal bouquets, luxury reception stands, and bespoke Mahr & wedding gift styling.',
+      quickLinks: 'Collections',
+      contactTitle: 'Concierge & Contact',
+      location: 'Riyadh, Saudi Arabia',
+      rights: '© 2026 Gift Sarah (هدايا سارة). All rights reserved.',
+    },
+  },
+} satisfies Record<Lang, unknown>;

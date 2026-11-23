@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-ivory: #FBF8F3;
+    --bg-linen: #F2EAE0;
+    --ink-espresso: #191512;
+    --ink-muted: #6A5F57;
+    --gold-champagne: #C59B5F;
+    --gold-light: #E4C796;
+    --sage-botanical: #4D5B47;
+    --rose-dusty: #C9968F;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: var(--bg-ivory);
+    color: var(--ink-espresso);
+    font-family: 'Tajawal', 'Plus Jakarta Sans', system-ui, sans-serif;
+    overflow-x: clip;
+    -webkit-tap-highlight-color: transparent;
+    background-image:
+      radial-gradient(at 12% 8%, rgba(228, 199, 150, 0.12) 0px, transparent 42%),
+      radial-gradient(at 88% 18%, rgba(201, 150, 143, 0.10) 0px, transparent 40%);
+  }
+
+  html[dir="ltr"] body {
+    font-family: 'Plus Jakarta Sans', 'Tajawal', system-ui, sans-serif;
+  }
+}
+
+.font-editorial {
+  font-family: 'Amiri', 'Cormorant Garamond', Georgia, serif;
+}
+
+html[dir="ltr"] .font-editorial {
+  font-family: 'Cormorant Garamond', 'Amiri', Georgia, serif;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FBF8F3;
+}
+::-webkit-scrollbar-thumb {
+  background: #D8CBB9;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C59B5F;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes kenBurns {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.07);
+  }
+}
+
+@keyframes progressFill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeSlideUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.animate-ken-burns {
+  animation: kenBurns 4.8s ease-out forwards;
+}
+
+.animate-progress {
+  animation: progressFill 4.5s linear forwards;
+  transform-origin: left;
+}
+
+html[dir="rtl"] .animate-progress {
+  transform-origin: right;
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 32s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Gold text gradient utility */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #9A723A 0%, #C59B5F 45%, #E4C796 75%, #A87E43 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
