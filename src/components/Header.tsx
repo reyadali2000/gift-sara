@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, ShoppingBag, Heart, Globe, Menu, X, Sparkles } from 'lucide-react';
-import type { Lang } from '../types';
+import type { Lang, Product } from '../types';
 import { STORE_INFO, translations } from '../i18n/translations';
 
 interface HeaderProps {
@@ -13,6 +13,8 @@ interface HeaderProps {
   onOpenCart: () => void;
   searchQuery: string;
   onSearchChange: (q: string) => void;
+  searchResults: Product[];
+  onSelectProduct: (product: Product) => void;
   onSelectCategory: (catAr: string) => void;
 }
 
@@ -26,6 +28,8 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenCart,
   searchQuery,
   onSearchChange,
+  searchResults,
+  onSelectProduct,
   onSelectCategory,
 }) => {
   const t = translations[lang];
@@ -154,32 +158,99 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Expandable Search Bar */}
+        {/* Expandable Search Bar with Instant Product-Name Results */}
         {searchOpen && (
           <div className="border-t border-[#E7DFD3] bg-[#FAF7F2] px-4 py-3 animate-fade-up">
-            <div className="max-w-3xl mx-auto relative flex items-center">
-              <Search className="w-4.5 h-4.5 text-[#8A7F76] absolute start-4 pointer-events-none" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => {
-                  onSearchChange(e.target.value);
-                  if (e.target.value.trim()) {
+            <div className="max-w-3xl mx-auto relative">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (searchQuery.trim()) {
+                    setSearchOpen(false);
                     document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });
                   }
                 }}
-                placeholder={t.searchPlaceholder}
-                autoFocus
-                className="w-full ps-11 pe-10 py-2.5 rounded-full bg-white border border-[#DFD5C7] focus:border-[#B8925A] focus:outline-none text-sm text-[#1E1916] placeholder:text-[#9B9087]"
-              />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => onSearchChange('')}
-                  className="absolute end-3.5 p-1 rounded-full hover:bg-[#EFE8DC] text-[#7A6F67]"
-                >
-                  <X className="w-4 h-4" />
-                </button>
+                className="relative flex items-center"
+              >
+                <Search className="w-4.5 h-4.5 text-[#8A7F76] absolute start-4 pointer-events-none" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => onSearchChange(e.target.value)}
+                  placeholder={t.searchPlaceholder}
+                  autoFocus
+                  className="w-full ps-11 pe-10 py-2.5 rounded-full bg-white border border-[#DFD5C7] focus:border-[#B8925A] focus:outline-none text-sm text-[#1E1916] placeholder:text-[#9B9087]"
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => onSearchChange('')}
+                    className="absolute end-3.5 p-1 rounded-full hover:bg-[#EFE8DC] text-[#7A6F67] cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </form>
+
+              {/* Live Name-Only Matching Results Dropdown */}
+              {searchQuery.trim() && (
+                <div className="mt-2.5 rounded-2xl bg-white border border-[#E5D9C7] shadow-xl overflow-hidden">
+                  {searchResults.length === 0 ? (
+                    <p className="px-4 py-4 text-xs sm:text-sm text-[#7A6F67] text-center">
+                      {lang === 'ar'
+                        ? 'لا توجد منتجات مطابقة لهذا الاسم'
+                        : 'No products matched this name'}
+                    </p>
+                  ) : (
+                    <>
+                      <ul className="divide-y divide-[#F2EAE0] max-h-72 overflow-y-auto">
+                        {searchResults.map((prod) => (
+                          <li key={prod.id}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                onSelectProduct(prod);
+                                setSearchOpen(false);
+                              }}
+                              className="w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[#FAF7F2] transition text-start cursor-pointer"
+                            >
+                              <img
+                                src={prod.image}
+                                alt={prod.name}
+                                className="w-11 h-11 rounded-xl object-cover bg-[#F2EAE0] shrink-0"
+                              />
+                              <div className="min-w-0 flex-1">
+                                <p className="text-sm font-bold text-[#1E1916] truncate">
+                                  {prod.name}
+                                </p>
+                                <p className="text-[11px] text-[#8C7352]">
+                                  {lang === 'ar' ? prod.categoryAr : prod.categoryEn}
+                                </p>
+                              </div>
+                              {prod.price > 0 && (
+                                <span className="shrink-0 text-xs font-bold text-[#1E1916]">
+                                  {prod.price.toLocaleString()} {t.catalog.sar}
+                                </span>
+                              )}
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSearchOpen(false);
+                          document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        className="w-full py-2.5 bg-[#FBF8F3] hover:bg-[#F2EAE0] border-t border-[#EAE0D2] text-xs font-semibold text-[#8C7352] transition cursor-pointer"
+                      >
+                        {lang === 'ar'
+                          ? 'عرض كل النتائج المطابقة في المتجر'
+                          : 'View all matching results in catalog'}
+                      </button>
+                    </>
+                  )}
+                </div>
               )}
             </div>
           </div>

@@ -15,6 +15,67 @@ import { Footer } from './components/Footer';
 
 type SortOption = 'featured' | 'price-asc' | 'price-desc' | 'sale';
 
+// Normalize Arabic text for accurate, typo-tolerant product name matching
+function normalizeArabic(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[\u064B-\u065F\u0670\u0640]/g, '') // remove diacritics & tatweel
+    .replace(/[أإآٱ]/g, 'ا')
+    .replace(/ة/g, 'ه')
+    .replace(/ى/g, 'ي')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+// Levenshtein distance (capped early for speed) to catch 1-letter typos like ستاند / استاند
+function isCloseWord(a: string, b: string): boolean {
+  if (b.includes(a) || a.includes(b)) return true;
+  if (a.length < 4 || Math.abs(a.length - b.length) > 1) return false;
+  let diffs = 0;
+  let i = 0;
+  let j = 0;
+  while (i < a.length && j < b.length) {
+    if (a[i] === b[j]) {
+      i++;
+      j++;
+    } else {
+      diffs++;
+      if (diffs > 1) return false;
+      if (a.length > b.length) i++;
+      else if (b.length > a.length) j++;
+      else {
+        i++;
+        j++;
+      }
+    }
+  }
+  return diffs + (a.length - i) + (b.length - j) <= 1;
+}
+
+function getNameMatchScore(productName: string, rawQuery: string): number {
+  const q = normalizeArabic(rawQuery);
+  if (!q) return 1;
+  const name = normalizeArabic(productName);
+  if (name === q) return 100;
+  if (name.startsWith(q)) return 90;
+  if (name.includes(q)) return 80;
+
+  const qTokens = q.split(' ').filter(Boolean);
+  const nameWords = name.split(' ').filter(Boolean);
+  if (qTokens.length === 0) return 0;
+
+  // Every query word must closely match at least one word in the product name
+  let matchedExact = 0;
+  for (const token of qTokens) {
+    if (name.includes(token)) {
+      matchedExact++;
+    } else if (!nameWords.some((w) => isCloseWord(token, w))) {
+      return 0;
+    }
+  }
+  return 50 + matchedExact * 10;
+}
+
 const rawProducts: Product[] = catalogData.products;
 const customServices: Product[] = rawProducts.filter((p) => p.type === 'service');
 const allProducts: Product[] = rawProducts.filter((p) => p.type !== 'service');
@@ -172,19 +233,28 @@ export function App() {
   };
 
   const filteredProducts = useMemo(() => {
-    let list = allProducts.filter((p) => {
-      if (selectedCategory !== 'ALL' && p.categoryAr !== selectedCategory) return false;
-      if (showWishlistOnly && !wishlist.includes(p.id)) return false;
-      if (budgetTier === 'UNDER_300' && !(p.price > 0 && p.price < 300)) return false;
-      if (budgetTier === 'MID_300_800' && !(p.price >= 300 && p.price <= 800)) return false;
-      if (budgetTier === 'LUX_800_PLUS' && !(p.price > 800)) return false;
-      if (searchQuery.trim()) {
-        const q = searchQuery.trim().toLowerCase();
-        const hay = `${p.name} ${p.description} ${p.categoryAr} ${p.categoryEn}`.toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
-      return true;
-    });
+    const trimmedQuery = searchQuery.trim();
+
+    let scored = allProducts
+      .map((p) => ({
+        product: p,
+        score: trimmedQuery ? getNameMatchScore(p.name, trimmedQuery) : 1,
+      }))
+      .filter(({ product: p, score }) => {
+        if (trimmedQuery && score === 0) return false;
+        if (selectedCategory !== 'ALL' && p.categoryAr !== selectedCategory) return false;
+        if (showWishlistOnly && !wishlist.includes(p.id)) return false;
+        if (budgetTier === 'UNDER_300' && !(p.price > 0 && p.price < 300)) return false;
+        if (budgetTier === 'MID_300_800' && !(p.price >= 300 && p.price <= 800)) return false;
+        if (budgetTier === 'LUX_800_PLUS' && !(p.price > 800)) return false;
+        return true;
+      });
+
+    if (trimmedQuery && sortBy === 'featured') {
+      scored = [...scored].sort((a, b) => b.score - a.score);
+    }
+
+    let list = scored.map((s) => s.product);
 
     if (sortBy === 'price-asc') {
       list = [...list].sort((a, b) => a.price - b.price);
@@ -196,6 +266,18 @@ export function App() {
 
     return list;
   }, [selectedCategory, budgetTier, searchQuery, sortBy, showWishlistOnly, wishlist]);
+
+  // Direct name-only instant matches for the header search dropdown
+  const instantSearchResults = useMemo(() => {
+    const trimmed = searchQuery.trim();
+    if (!trimmed) return [];
+    return allProducts
+      .map((p) => ({ product: p, score: getNameMatchScore(p.name, trimmed) }))
+      .filter((x) => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 6)
+      .map((x) => x.product);
+  }, [searchQuery]);
 
   const visibleProducts = filteredProducts.slice(0, visibleCount);
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -231,6 +313,8 @@ export function App() {
         onOpenCart={() => setIsCartOpen(true)}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+        searchResults={instantSearchResults}
+        onSelectProduct={setQuickViewProduct}
         onSelectCategory={handleSelectCategory}
       />
 
