@@ -57,10 +57,6 @@ export const Hero: React.FC<HeroProps> = ({ lang, featuredProducts, onQuickView 
         id="hero"
         className="relative overflow-hidden bg-gradient-to-b from-[#F4ECE1] via-[#FBF8F3] to-[#FBF8F3] pt-8 pb-12 lg:pt-12 lg:pb-16"
       >
-        {/* Ambient botanical light halos */}
-        <div className="pointer-events-none absolute -top-28 start-1/3 w-[28rem] h-[28rem] rounded-full bg-[#E4C796]/20 blur-3xl" />
-        <div className="pointer-events-none absolute bottom-0 end-1/4 w-96 h-96 rounded-full bg-[#C9968F]/15 blur-3xl" />
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             {/* Editorial Copy */}
@@ -163,6 +159,9 @@ export const Hero: React.FC<HeroProps> = ({ lang, featuredProducts, onQuickView 
                           key={item.id}
                           src={item.image}
                           alt={item.name}
+                          loading={idx === 0 ? 'eager' : 'lazy'}
+                          decoding="async"
+                          fetchPriority={idx === 0 ? 'high' : 'low'}
                           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
                             idx === activeIndex
                               ? 'opacity-100 animate-ken-burns'

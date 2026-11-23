@@ -65,6 +65,7 @@ export const CategoryShowcase: React.FC<CategoryShowcaseProps> = ({
                     src={cat.cover}
                     alt={title}
                     loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-108 transition duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#191512]/80 via-[#191512]/20 to-transparent" />

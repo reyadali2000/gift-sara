@@ -55,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Main Glassmorphic Nav */}
-      <div className="bg-[#FAF7F2]/92 backdrop-blur-md border-b border-[#E7DFD3] transition-colors">
+      <div className="bg-[#FAF7F2]/96 sm:bg-[#FAF7F2]/90 sm:backdrop-blur-md border-b border-[#E7DFD3] transition-colors">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-1.5 sm:gap-4">
           {/* Left/Right Group: Mobile Menu + Brand Logo */}
           <div className="flex items-center gap-1.5 sm:gap-3 min-w-0">

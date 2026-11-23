@@ -8,7 +8,7 @@ export const STORE_INFO = {
   snapchat: 'https://www.snapchat.com/add/hmsh_lyn',
   tiktok: 'https://www.tiktok.com/@s.m7343',
   originalUrl: 'https://gift-sarah.com/en',
-  logo: '/images/brand-logo-transparent.png',
+  logo: '/images/brand-logo-transparent.webp',
   icon: '/images/favicon.png',
   branches: [
     {

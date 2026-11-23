@@ -110,7 +110,7 @@ export function App() {
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const [showWishlistOnly, setShowWishlistOnly] = useState<boolean>(false);
-  const [visibleCount, setVisibleCount] = useState<number>(16);
+  const [visibleCount, setVisibleCount] = useState<number>(12);
 
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
@@ -507,7 +507,7 @@ export function App() {
       {/* Interactive Native-Style Mobile Bottom Navigation Bar */}
       <nav
         aria-label="Mobile Navigation"
-        className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#FBF8F3]/95 backdrop-blur-lg border-t border-[#E6DCCB] px-3 pt-2 pb-[max(0.55rem,env(safe-area-inset-bottom))] shadow-[0_-10px_30px_-12px_rgba(25,21,18,0.16)]"
+        className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#FBF8F3]/98 border-t border-[#E6DCCB] px-3 pt-2 pb-[max(0.55rem,env(safe-area-inset-bottom))] shadow-[0_-10px_30px_-12px_rgba(25,21,18,0.16)]"
       >
         <div className="grid grid-cols-4 gap-1.5">
           {[
