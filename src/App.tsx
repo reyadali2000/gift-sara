@@ -54,6 +54,7 @@ export function App() {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'hero' | 'collections' | 'branches' | 'cart'>('hero');
 
   const [wishlist, setWishlist] = useState<string[]>(() => {
     try {
@@ -79,6 +80,28 @@ export function App() {
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
   }, [lang]);
+
+  // Scroll-spy for interactive mobile bottom navigation bar
+  useEffect(() => {
+    const onScroll = () => {
+      if (isCartOpen) return;
+      const branchesEl = document.getElementById('branches');
+      const collectionsEl = document.getElementById('collections');
+      const scrollY = window.scrollY + 220;
+
+      if (branchesEl && scrollY >= branchesEl.offsetTop) {
+        setActiveTab('branches');
+      } else if (collectionsEl && scrollY >= collectionsEl.offsetTop) {
+        setActiveTab('collections');
+      } else {
+        setActiveTab('hero');
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [isCartOpen]);
 
   useEffect(() => {
     try {
@@ -397,48 +420,88 @@ export function App() {
         <MessageCircle className="w-6 h-6" />
       </a>
 
-      {/* Native-Style Mobile Bottom Navigation Bar */}
+      {/* Interactive Native-Style Mobile Bottom Navigation Bar */}
       <nav
         aria-label="Mobile Navigation"
-        className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#FBF8F3]/95 backdrop-blur-md border-t border-[#E6DCCB] px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_-8px_25px_-10px_rgba(25,21,18,0.12)]"
+        className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#FBF8F3]/95 backdrop-blur-lg border-t border-[#E6DCCB] px-3 pt-2 pb-[max(0.55rem,env(safe-area-inset-bottom))] shadow-[0_-10px_30px_-12px_rgba(25,21,18,0.16)]"
       >
-        <div className="grid grid-cols-4 gap-1">
-          <a
-            href="#hero"
-            className="flex flex-col items-center justify-center gap-0.5 py-1 text-[#5C5149] active:text-[#191512]"
-          >
-            <Home className="w-5 h-5 text-[#B88D50]" />
-            <span className="text-[10px] font-semibold">{t.nav.home}</span>
-          </a>
-          <a
-            href="#collections"
-            className="flex flex-col items-center justify-center gap-0.5 py-1 text-[#5C5149] active:text-[#191512]"
-          >
-            <Grid2x2 className="w-5 h-5 text-[#B88D50]" />
-            <span className="text-[10px] font-semibold">{t.nav.collections}</span>
-          </a>
-          <a
-            href="#branches"
-            className="flex flex-col items-center justify-center gap-0.5 py-1 text-[#5C5149] active:text-[#191512]"
-          >
-            <MapPin className="w-5 h-5 text-[#B88D50]" />
-            <span className="text-[10px] font-semibold">{lang === 'ar' ? 'الفروع' : 'Branches'}</span>
-          </a>
-          <button
-            type="button"
-            onClick={() => setIsCartOpen(true)}
-            className="relative flex flex-col items-center justify-center gap-0.5 py-1 text-[#191512]"
-          >
-            <div className="relative">
-              <ShoppingBag className="w-5 h-5 text-[#191512]" />
-              {cartCount > 0 && (
-                <span className="absolute -top-1.5 -end-2.5 min-w-4 h-4 px-1 rounded-full bg-[#C59B5F] text-white text-[9px] font-bold flex items-center justify-center">
-                  {cartCount}
+        <div className="grid grid-cols-4 gap-1.5">
+          {[
+            {
+              id: 'hero' as const,
+              label: t.nav.home,
+              icon: Home,
+              action: () => {
+                setIsCartOpen(false);
+                setActiveTab('hero');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              },
+            },
+            {
+              id: 'collections' as const,
+              label: t.nav.collections,
+              icon: Grid2x2,
+              action: () => {
+                setIsCartOpen(false);
+                setActiveTab('collections');
+                document.getElementById('collections')?.scrollIntoView({ behavior: 'smooth' });
+              },
+            },
+            {
+              id: 'branches' as const,
+              label: lang === 'ar' ? 'الفروع' : 'Branches',
+              icon: MapPin,
+              action: () => {
+                setIsCartOpen(false);
+                setActiveTab('branches');
+                document.getElementById('branches')?.scrollIntoView({ behavior: 'smooth' });
+              },
+            },
+            {
+              id: 'cart' as const,
+              label: t.cart.title,
+              icon: ShoppingBag,
+              action: () => {
+                setActiveTab('cart');
+                setIsCartOpen(true);
+              },
+            },
+          ].map((tab) => {
+            const Icon = tab.icon;
+            const isActive = isCartOpen ? tab.id === 'cart' : activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                onClick={tab.action}
+                className={`relative flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-2xl transition-all duration-300 active:scale-95 cursor-pointer ${
+                  isActive
+                    ? 'bg-[#191512] text-[#FBF8F3] shadow-md -translate-y-0.5'
+                    : 'text-[#6A5F57] hover:bg-[#EFE7DB]/70'
+                }`}
+              >
+                <div className="relative">
+                  <Icon
+                    className={`w-4.5 h-4.5 transition-transform duration-300 ${
+                      isActive ? 'text-[#E4C796] scale-110' : 'text-[#9A7A4C]'
+                    }`}
+                  />
+                  {tab.id === 'cart' && cartCount > 0 && (
+                    <span className="absolute -top-1.5 -end-2.5 min-w-4 h-4 px-1 rounded-full bg-[#C59B5F] text-white text-[9px] font-bold flex items-center justify-center shadow-xs">
+                      {cartCount}
+                    </span>
+                  )}
+                </div>
+                <span
+                  className={`text-[10px] leading-tight transition-colors ${
+                    isActive ? 'font-bold text-[#FBF8F3]' : 'font-medium text-[#6A5F57]'
+                  }`}
+                >
+                  {tab.label}
                 </span>
-              )}
-            </div>
-            <span className="text-[10px] font-semibold">{t.cart.title}</span>
-          </button>
+              </button>
+            );
+          })}
         </div>
       </nav>
 
